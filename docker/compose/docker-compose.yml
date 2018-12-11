@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+    apache:
+        build: ../build/.
+        container_name: apache
+        volumes:
+        - ../../app/:/var/www/html
+        links:
+        - mysql
+        ports:
+        - 10000:80
+        privileged: true
+
+    mysql:
+        image: mysql:5.7
+        container_name: mysql
+        ports:
+            - 10002:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: app
+        privileged: true
+
+    adminer:
+        image: adminer
+        container_name: phpmyadmin
+        ports:
+        - 10001:8080
+        links:
+        - mysql:db
+        privileged: true
